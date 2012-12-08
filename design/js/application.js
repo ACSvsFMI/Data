@@ -3,13 +3,9 @@ $(document).ready(function(){
 var key="AIzaSyCRfALTO27KAX-v5LrCm2bMzppRuimHBGA";
 
 
-alert("Loaded");
-var gplus=new function(){
-	alert("In clasa");	
-	this.init=function(){
 
-	}
-	this.client_update=function(id,gid){
+
+function client_update(id,gid){
 		$.getJSON("https://www.googleapis.com/plus/v1/people/"+gid+"?callback=?&key="+key,function(data){
 			console.log(data);
 			//Vf daca e user data.isPlusUser
@@ -29,7 +25,7 @@ var gplus=new function(){
 			});
 		});
 	}
-	this.client_sterge=function(id){
+function client_sterge(id){
 		$.ajax({
 			url: 'php/ajax.php?page=delete&id='+id,
 			  success: function(data){
@@ -38,7 +34,7 @@ var gplus=new function(){
 			  }
 		});
 	}
-	this.client_add=function(gid,pri){
+function client_add(gid,pri){
 		$.getJSON("https://www.googleapis.com/plus/v1/people/"+gid+"?callback=?&key="+key,function(data){
 		if(data.isPlusUser){
 			alert("Eroare, utilizatorul nu exista");			
@@ -52,7 +48,7 @@ var gplus=new function(){
 			});
 		});
 	}
-	this.client_crawl=function(){
+function client_crawl(){
 		alert("In functia crawl");
 		$.ajax({
 			url: 'php/ajax.php?page=cron',
