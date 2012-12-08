@@ -227,10 +227,10 @@ class SQL_DB
 				
 				switch($v)
 				{
-					case '': $dbVals .= "NULL"; break;
+					//case '': $dbVals .= "NULL"; break;
 					case 'NULL':
 					case 'NOW()': $dbVals .= $v; break;
-					default: $dbVals .= "'".mysql_escape_string($v)."'"; break;
+					default: $dbVals .= "'".mysql_real_escape_string($v)."'"; break;
 				}
 			}
 		}
@@ -248,7 +248,7 @@ class SQL_DB
 				if($v == 'NULL' || $v == 'NOW()')
 					$dbVals .= $v;
 				else
-					$dbVals .= "'".mysql_escape_string($v)."'";
+					$dbVals .= "'".mysql_real_escape_string($v)."'";
 			}
 		}
 		
@@ -264,7 +264,7 @@ class SQL_DB
 		foreach($sets as $key => $value)
 		{
 			if($dbSet != NULL) $dbSet .= ', ';
-			$dbSet .= "`$key` = '".mysql_escape_string($value)."'";
+			$dbSet .= "`$key` = '".mysql_real_escape_string($value)."'";
 		}
 		if($where) $where = "WHERE ($where)";
 		$limit = ($limit) ? "LIMIT $limit" : NULL;

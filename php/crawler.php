@@ -1,5 +1,4 @@
 <?php 
-
 define('ANTIHACK', TRUE);
 require_once('../config/_autoload.php');
 include_once('../libs/SQL_DB.php');
@@ -34,17 +33,19 @@ function crawl($id, $gid){
 	$json=json_decode($sursa);
 	
 	for($i=0;$i<count($json->{'items'});$i++){
-	/*Content stire - plusoners - comentarii - shareuri - url_comm  - data postarii - titlu - Tip postare(share/post) - Etag Postare */
-		if(empty($json->{'items'}[0]->{'etag'})){
+		$eTag = trim($json->{'items'}[$i]->{'etag'}, '"');
+		$published = new DateTime($json->{'items'}[$i]->{'published'});
+		/*Content stire - plusoners - comentarii - shareuri - url_comm  - data postarii - titlu - Tip postare(share/post) - Etag Postare */
+		if(empty($eTag))
 			return "0002";
-		}
-		if($r=SQL_DB::sql_count(MYSQL_PRE."posts","user_id='".$gid."' AND etag='".$json->{'items'}[0]->{'etag'}."'",'*','1')){
+		
+		if($r=SQL_DB::sql_count(MYSQL_PRE."posts","user_id='".$id."' AND etag='$eTag'",'*','1')){
 			if($r)
-				return "Already Updated";
+				return "Already Updated ".$json->{'items'}[$i]->{'etag'}."<br />";
 
 		}
 		$gplus_sql=array('user_id'=>$id,
-			'etag'=>$json->{'items'}[$i]->{'etag'},
+			'etag'=>$eTag,
 			'title'=>$json->{'items'}[$i]->{'title'},
 			'content'=>$json->{'items'}[$i]->{'object'}->{'content'},
 			'url_comm'=>$json->{'items'}[$i]->{'object'}->{'url'},
@@ -52,10 +53,10 @@ function crawl($id, $gid){
 			'comms'=>(int)$json->{'items'}[$i]->{'object'}->{'replies'}->{'totalItems'},
 			'plus'=>(int)$json->{'items'}[$i]->{'object'}->{'plusoners'}->{'totalItems'},
 			'type'=>$json->{'items'}[$i]->{'verb'},
-			'datainsert'=>date("H:i d/m/Y",strtotime($json->{'items'}[$i]->{'published'}))
+			'datainsert'=>$published->format('Y-m-d H:i:s')
 		);
-		
-		SQL_DB::sql_insert(MYSQL_PRE."posts", $gplus_sql) or die("Nasol");
+		//date("H:i d/m/Y",strtotime($json->{'items'}[$i]->{'published'}))
+		SQL_DB::sql_insert(MYSQL_PRE."posts", $gplus_sql);
 
 	}
 
