@@ -8,8 +8,10 @@ function client_update(id,gid){
 			if(data.isPlusUser){
 				alert("Eroare, utilizatorul nu exista");			
 			}
+			
 			/*Actualizare tabel ws*/
-			$("Cimage_"+id).html(data.image.url);
+			$("Cimage_"+id).attr('src',data.image.url);
+			alert('Data Imagine'+data.image.url);
 			$("Cfname_"+id).html(data.name.familyName+" "+data.name.givenName);
 			
 			$.ajax({
@@ -45,7 +47,6 @@ function client_add(gid,pri){
 		});
 	}
 function client_crawl(){
-		alert("In functia crawl");
 		$.ajax({
 			url: 'php/ajax.php?page=cron',
 			  success: function(data){
