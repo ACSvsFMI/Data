@@ -1,3 +1,5 @@
+$(document).ready(function(){
+
 var key="AIzaSyCRfALTO27KAX-v5LrCm2bMzppRuimHBGA";
 
 var gplus=new function(){
@@ -16,11 +18,10 @@ var gplus=new function(){
 			$("Cfname_"+id).html(data.name.familyName+" "+data.name.givenName);
 			
 			$.ajax({
-			  url: 'php/ajax.php?page=update&id='+id+'&gid='+gid+'&f='+data.name.familyName+'&n='+data.name.givenName+'&av='++data.image.url,
+			  url: 'php/ajax.php?page=update&id='+id+'&gid='+gid+'&f='+data.name.familyName+'&n='+data.name.givenName+'&av='+data.image.url,
 			  success: function(data){
 			    $('.result').html(data);
-			    //data.id + " "+data.gender+" "+data.name.familyName+" "+data.name.givenName+" "+data.image.url
-			    
+			   	alert("Contul clientului a fost actualizat");
 			  }
 			});
 		});
@@ -30,7 +31,7 @@ var gplus=new function(){
 			url: 'php/ajax.php?page=delete&id='+id,
 			  success: function(data){
 			    $('.result').html(data);
-			    
+			    alert("Clientul a fost sters");
 			  }
 		});
 	}
@@ -39,16 +40,27 @@ var gplus=new function(){
 		if(data.isPlusUser){
 			alert("Eroare, utilizatorul nu exista");			
 		}
-		
+			$.ajax({
+			url: 'php/ajax.php?page=adaugare&gid='+id+'&g='+data.gender+'&f='+data.name.familyName+'&n='+data.name.givenName+'&av='+data.image.url+'&pri='+pri,
+				success: function(data){
+				    $('.result').html(data);
+				    alert("Clientul a fost adaugat cu succes!");
+				}
+			});
+		});
+	}
+	this.client_crawl=function(){
 		$.ajax({
-		url: 'php/ajax.php?page=adaugare&gid='+id+'&g='+data.gender+'&f='+data.name.familyName+'&n='+data.name.givenName+'&av='+data.image.url+'&pri='+pri,
+			url: 'php/ajax.php?page=cron',
 			  success: function(data){
-			    $('.result').html(data);
-			    
+			    alert("Baza de date a fost actualizata cu succes!");
+				window.location="index.php?page=posts";
 			  }
 		});
 	}
-}	
+}
+
+	
 
 
 });
