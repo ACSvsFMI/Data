@@ -20,6 +20,7 @@ function fetch($url) {
 function init(){
 	$r=SQL_DB::sql_select(MYSQL_PRE."users",NULL,NULL,0,0,array('gid'));
 	foreach($r as $k=>$v){
+		echo $v['gid'];		
 		crawl($v['gid']);
 	}
 
