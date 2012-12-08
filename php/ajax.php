@@ -16,7 +16,7 @@ if($page=='update'){
  if(!is_numeric($id) || !is_numeric($gid)) die("gid nu e numeric");
 	include("crawler.php");
 /*fetch*/
-$jsursa=json_decode(fetch("https://www.googleapis.com/plus/v1/people/"+$gid+"?callback=?&key=".$api_key));
+$jsursa=json_decode(fetch("https://www.googleapis.com/plus/v1/people/"+$gid+"?key=".$api_key));
 //'&f='+data.name.familyName+'&n='+data.name.givenName+'&av='+data.image.url
 
 var_dump($jsursa);
@@ -52,6 +52,9 @@ $f=$_GET['f'];
 $n=$_GET['n'];
 $av=$_GET['av'];
 $pri=$_GET['pri'];
+
+$jsursa=json_decode(fetch("https://www.googleapis.com/plus/v1/people/".$gid."?key=".$api_key));
+var_dump($jsursa);
 
 SQL_DB::sql_insert(MYSQL_PRE."users",array('firstname'=>$n,'fullname'=>$f.' '.$n,'lastname'=>$n,'gender'=>$g,
 'gurl'=>'https://plus.google.com/u/0/'.$gid.'/posts','priority'=>$pri,'datainsert'=>'NOW()'));
