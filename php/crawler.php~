@@ -20,7 +20,6 @@ function fetch($url) {
 function init(){
 	$r=SQL_DB::sql_select(MYSQL_PRE."users",NULL,NULL,0,0,array('gid'));
 	foreach($r as $k=>$v){
-		echo $v['gid'];		
 		crawl($v['gid']);
 	}
 
@@ -33,14 +32,16 @@ function crawl($gid){
 	for($i=0;$i<count($json->{'items'});$i++){
 	/*Content stire - plusoners - comentarii - shareuri - url_comm  - data postarii - titlu - Tip postare(share/post) - Etag Postare */
 		if(empty($json->{'items'}[0]->{'etag'})){
+			echo "Empty Etag";
 			return "0002";
 		}
 		if($r=SQL_DB::sql_count(MYSQL_PRE."posts","user_id='".$gid."' AND etag='".$json->{'items'}[0]->{'etag'}."'",'*','1')){
+			echo "Caz aici ".$r;
 			if($r)
 				return "Already Updated";
 
 		}
-		SQL_DB::sql_insert(MYSQL_PRE."posts", array('user_id'=>$gid,
+		$gplus_sql=array('user_id'=>$gid,
 			'etag'=>$json->{'items'}[$i]->{'etag'},
 			'title'=>$json->{'items'}[$i]->{'title'},
 			'content'=>$json->{'items'}[$i]->{'object'}->{'content'},
@@ -49,7 +50,10 @@ function crawl($gid){
 			'comms'=>$json->{'items'}[$i]->{'object'}->{'replies'}->{'totalItems'},
 			'plus'=>$json->{'items'}[$i]->{'object'}->{'plusoners'}->{'totalItems'},
 			'type'=>$json->{'items'}[$i]->{'verb'},
-			'datainsert'=>date("H:i d/m/Y",strtotime($json->{'items'}[$i]->{'published'}))
+			'datainsert'=>date("H:i d/m/Y",strtotime($json->{'items'}[$i]->{'published'});
+		
+		print_r($gplus_sql);
+		SQL_DB::sql_insert(MYSQL_PRE."posts", $gplus_sql) or die("");
 		));
 
 	}
