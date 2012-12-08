@@ -53,6 +53,9 @@ $n=$_GET['n'];
 $av=$_GET['av'];
 $pri=$_GET['pri'];
 
+$jsursa=json_decode(fetch("https://www.googleapis.com/plus/v1/people/".$gid."?key=".$api_key));
+var_dump($jsursa);
+
 SQL_DB::sql_insert(MYSQL_PRE."users",array('firstname'=>$n,'fullname'=>$f.' '.$n,'lastname'=>$n,'gender'=>$g,
 'gurl'=>'https://plus.google.com/u/0/'.$gid.'/posts','priority'=>$pri,'datainsert'=>'NOW()'));
 
