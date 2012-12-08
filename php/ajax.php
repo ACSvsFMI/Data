@@ -16,7 +16,7 @@ if($page=='update'){
  if(!is_numeric($id) || !is_numeric($gid)) die("gid nu e numeric");
 	include("crawler.php");
 /*fetch*/
-$jsursa=json_decode(fetch("https://www.googleapis.com/plus/v1/people/"+$gid+"?callback=?&key=".$api_key));
+$jsursa=json_decode(fetch("https://www.googleapis.com/plus/v1/people/"+$gid+"?key=".$api_key));
 //'&f='+data.name.familyName+'&n='+data.name.givenName+'&av='+data.image.url
 
 var_dump($jsursa);
