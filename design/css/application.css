@@ -89,13 +89,3 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f9f9f9', end
 
 .filter { height:32px; width:400px; margin:10px 20px 0 20px; }
 .filter > select { width:200px; float:left; margin:4px 0 0 4px; }
-
-.pagination { float:right; height:32px; text-align:right; width:240px; margin:10px 25px 0 20px; }
-.pagination > a,
-.pagination > span { width:30px; height:16px; float:left; margin-left:4px; text-align:center; text-indent:-5000px; border:1px solid #999; background: url("../images/icons/button.png") -10px -217px repeat-x #FFFFFF; }
-.pagination > span { background:#FFF; border-color:#CCC; }
-.pagination > a > span,
-.pagination > span > span { display:block; width:28px; height:14px; text-indent:-5000px; background: url("../images/icons/structure.png") 14px -667px no-repeat transparent; }
-.pagination > a.left > span,
-.pagination > span.left > span { background-position:12px -619px; }
-.pagination > .page-info { width:160px; float:left; text-align:center; line-height:20px; }

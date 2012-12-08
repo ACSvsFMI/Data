@@ -1,12 +1,11 @@
 <?php
 $search = (isset($_GET['search'])) ? (string)$_GET['search'] : NULL;
-$category = (defined('arg1') && arg1 > 0) ? arg1 : 0;
-$status	  = (defined('arg2') && arg2 > 0) ? arg2 : 0;
-$limit	  = (defined('arg3')) ? arg3 : 0;
-$perPage  = 8;
+$limit	= (isset($_GET['limit'])) ? (string)$_GET['limit'] : 0;
+$or_name	= (isset($_GET['limit'])) ? (string)$_GET['limit'] : 0;
+$perPage  = 100;
 
 $t_results = SQL_DB::sql_select(MYSQL_PRE.'users', NULL, "ORDER BY `datainsert` DESC");
-
+$max = count($t_results);
 $results = array();
 for($n=($limit+1); $n<=$limit+$perPage; $n++)
 {
@@ -23,8 +22,6 @@ for($n=($limit+1); $n<=$limit+$perPage; $n++)
 	else
 		break;
 }
-
-$max = count($results);
 ?>
     <div id="Content" class="clear">
     	<div id="Page" class="site_width center">
@@ -39,33 +36,35 @@ $max = count($results);
             <div class="cfix"></div>
             <div class="filter left"><select><option>Toate</option><option>Doar cele validate</option></select></div>
             <div class="pagination right clear">
-				<?php echo pagination(array('admin', 'index', $category, $status), array(), $limit, $perPage, $max); ?>
+				<a href="index.php?page=add" style="float:right; margin:20px 30px 0 0; color:#900;">Adauga client</a>
             </div>
             <div class="cfix"></div>
             <div class="wp-table">
             	<div class="th">
                 	<span class="td" style="width:20px;"></span>
-                    <span class="td" style="width:390px;">Client</span>
+                    <span class="td" style="width:380px;">Client</span>
                     <span class="td" style="width:50px;">Postari</span>
                     <span class="td" style="width:50px;">Share</span>
                     <span class="td" style="width:50px;">Comments</span>
-                    <span class="td" style="width:100px;">Actualizat</span>
+                    <span class="td" style="width:110px;">Actualizat</span>
                 </div>
                 <?php
 				foreach($results as $row)
 				{
 					$datainsert = new DateTime($row['datainsert']);
 					//$category = $catModel->get($row['category']);
+					$posts = SQL_DB::sql_count(MYSQL_PRE."posts", "`user_id` = '".$row['id']."' AND `type` = 'post'");
+					$share = SQL_DB::sql_count(MYSQL_PRE."posts", "`user_id` = '".$row['id']."' AND `type` = 'share'");
 					echo '<section class="tr">';
 						echo '<div class="td" style="width:20px; line-height:64px;">#'.$row['id'].'</div>';
-                    	echo '<div class="td" style="width:390px;">';
+                    	echo '<div class="td" style="width:380px;">';
 							echo '<div class="image"><img id="Cimage_'.$row['id'].'" src="https://lh4.googleusercontent.com/-TbJPTyRfwTk/AAAAAAAAAAI/AAAAAAAAAIE/OKXlm7KRQ4k/photo.jpg?sz=50" width="53" height="53" alt="" /></div>';
-							echo '<div class="info"><h1><a id="Cfname_'.$row['id'].'"  href="'.$row["url_comm"].'" target="_blank">'.$row["fullname"].'</a></h1><span id="Cfunc_'.$row['id'].'" >Senior web la Hosting</span><div class="options"><a href="">Editeaza</a> <a href="">Sterge</a></div></div>';
+							echo '<div class="info"><h1><a id="Cfname_'.$row['id'].'"  href="'.$row["url_comm"].'" target="_blank">'.$row["fullname"].'</a></h1><span id="Cfunc_'.$row['id'].'" >Senior web la Hosting</span></div>';
 						echo '</div>';
+						echo '<div class="td tcenter" style="width:50px; line-height:64px;">'.$posts.'</div>';
+                    	echo '<div class="td tcenter" style="width:50px; line-height:64px;">'.$share.'</div>';
 						echo '<div class="td" style="width:50px; line-height:64px;">999,999</div>';
-                    	echo '<div class="td" style="width:50px; line-height:64px;">999,999</div>';
-						echo '<div class="td" style="width:50px; line-height:64px;">999,999</div>';
-						echo '<div class="td" style="width:100px;">'.$datainsert->format("H:i").' <strong>'.$datainsert->format("d M Y").'</strong><br /><span style="color:#666">'.Datatime::ago($datainsert->format("Y-m-d")).'</span><div class="options2"><a onclick="return gplus.client_update('.$row["id"].', '.$row["gid"].');" href="#">Actualizeaza</a></div></div>';
+						echo '<div class="td" style="width:110px;">'.$datainsert->format("H:i").' <strong>'.$datainsert->format("d M Y").'</strong><br /><span style="color:#666">'.Datatime::ago($datainsert->format("Y-m-d")).'</span><div class="options2"><a onclick="client_update('.$row["id"].', '.$row["gid"].'); return false;" href="#">Actualizeaza</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a onclick="client_sterge('.$row["id"].'); return false;" href="#">Sterge</a></div></div>';
 					echo '</section>';
 				}
 				?>

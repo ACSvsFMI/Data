@@ -1,9 +1,5 @@
-$(document).ready(function(){
 
 var key="AIzaSyCRfALTO27KAX-v5LrCm2bMzppRuimHBGA";
-
-
-
 
 function client_update(id,gid){
 		$.getJSON("https://www.googleapis.com/plus/v1/people/"+gid+"?callback=?&key="+key,function(data){
@@ -58,9 +54,3 @@ function client_crawl(){
 			  }
 		});
 	}
-}
-
-	
-
-
-});
