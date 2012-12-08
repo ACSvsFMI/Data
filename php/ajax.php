@@ -13,10 +13,18 @@ if($page=='update'){
  $id=$_GET['id'];
  $gid=$_GET['gid'];
  if(!is_numeric($id) || !is_numeric($gid)) die("gid nu e numeric");
-$f=$_GET['f'];
-$n=$_GET['n'];
-$av=$_GET['av'];
+	include("crawler.php");
+/*fetch*/
+$jsursa=json_decode(fetch("https://www.googleapis.com/plus/v1/people/"+$gid+"?callback=?&key=".$api_key));
+//'&f='+data.name.familyName+'&n='+data.name.givenName+'&av='+data.image.url
 
+var_dump($jsursa);
+
+$f=$jsursa->{'name'}->{'familyName'};
+$n=$jsursa->{'name'}->{'givenName'};
+$av=$jsursa->{'image'}->{'url'};
+
+die($f." ".$n." ".$av);
  SQL_DB::sql_update(MYSQL_PRE."users",array('avatar'=>$av,'firstname'=>$f,'lastname'=>$n),"id=".$id,1);
  echo "ok";
 //echo "<img src='design/images/loading.gif' alt='Loading'/>";

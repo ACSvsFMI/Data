@@ -2,23 +2,24 @@
 var key="AIzaSyCRfALTO27KAX-v5LrCm2bMzppRuimHBGA";
 
 function client_update(id,gid){
-		$.getJSON("https://www.googleapis.com/plus/v1/people/"+gid+"?callback=?&key="+key,function(data){
+		/*$.getJSON("https://www.googleapis.com/plus/v1/people/"+gid+"?callback=?&key="+key,function(data){
 			console.log(data);
 			//Vf daca e user data.isPlusUser
 			if(data.isPlusUser){
 				alert("Eroare, utilizatorul nu exista");			
 			}
 			
-			/*Actualizare tabel ws*/
+			
 			$("Cimage_"+id).attr('src',data.image.url);
 			alert('Data Imagine'+data.image.url);
 			$("Cfname_"+id).html(data.name.familyName+" "+data.name.givenName);
-			
-			$.ajax({
-			  url: 'php/ajax.php?page=update&id='+id+'&gid='+gid+'&f='+data.name.familyName+'&n='+data.name.givenName+'&av='+data.image.url,
+		*/
+	$.ajax({
+	url: 'php/ajax.php?page=update&id='+id+'&gid='+gid,
 			  success: function(data){
 			    $('.result').html(data);
 			   	alert("Contul clientului a fost actualizat");
+				window.location="index.php?page=users";
 			  }
 			});
 		});
