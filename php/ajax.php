@@ -1,4 +1,5 @@
 <?php
+//define('ANTIHACK', TRUE);
 $page=$_GET['page'];
 $v_page=array('update','search','delete','edit','adaugare','cron');
 
@@ -37,7 +38,7 @@ die($f." ".$n." ".$av);
 $id=$_GET['id'];
 	SQL_DB::sql_delete(MYSQL_PRE."users",array('id'=>$id));
 	SQL_DB::sql_delete(MYSQL_PRE."posts",array('user_id'=>$id));
-	echo "ok"
+	echo "ok";
 
 
 
@@ -50,7 +51,7 @@ $g=$_GET['g'];
 $f=$_GET['f'];
 $n=$_GET['n'];
 $av=$_GET['av'];
-$pri=$_GET['pri']
+$pri=$_GET['pri'];
 
 SQL_DB::sql_insert(MYSQL_PRE."users",array('firstname'=>$n,'fullname'=>$f.' '.$n,'lastname'=>$n,'gender'=>$g,
 'gurl'=>'https://plus.google.com/u/0/'.$gid.'/posts','priority'=>$pri,'datainsert'=>'NOW()'));

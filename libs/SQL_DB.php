@@ -1,4 +1,4 @@
-<?php  if ( ! defined('ANTIHACK')) exit('No direct script access allowed');
+<?php 
 /**
  * SQL DB Class v1.0
  *

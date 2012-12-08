@@ -89,3 +89,9 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f9f9f9', end
 
 .filter { height:32px; width:400px; margin:10px 20px 0 20px; }
 .filter > select { width:200px; float:left; margin:4px 0 0 4px; }
+
+.errors { color:#900; }
+
+.add_form { display:block; clear:both; margin:50px 0 0 30px; }
+.add_form fieldset { margin-top:10px;}
+.add_form button { width:100px; height:30px; display:block; margin-top:5px}

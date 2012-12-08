@@ -19,9 +19,8 @@ function client_update(id,gid){
 			  success: function(data){
 			    $('.result').html(data);
 			   	alert("Contul clientului a fost actualizat");
-				window.location="index.php?page=users";
+				//window.location="index.php?page=users";
 			  }
-			});
 		});
 	}
 function client_sterge(id){

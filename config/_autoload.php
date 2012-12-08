@@ -1,4 +1,4 @@
-<?php  if( ! defined('ANTIHACK')) exit('No direct script access allowed');
+<?php
 
 require_once('ini_set.php');
 require_once('server.php');
