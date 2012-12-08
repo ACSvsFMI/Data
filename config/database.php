@@ -1,11 +1,4 @@
-<?php
-// ANTIHACK verificare access din exterior ------------------------------------------------------------------------------- //
-if(!defined('ANTIHACK'))
-{
-	header('HTTP/1.0 403 Forbidden');
-	header('Status: 403 Forbidden');
-	die(include("../module/e_403.php"));
-}
+<?php if ( ! defined('ANTIHACK')) exit('No direct script access allowed');
 //------------------------------------------------------------------------------------------------------------------------ //
 //
 //------------------------------------------------------------------------------------------------------------------------ //
@@ -14,7 +7,7 @@ if(!defined('ANTIHACK'))
 	define("MYSQL_SERVER",	"localhost");
 	define("MYSQL_USER",	"root");
 	define("MYSQL_PAROLA",	"");
-	define("BAZA_DATE",		"DBGplus");
+	define("BAZA_DATE",		"gplus");
 	define("MYSQL_PRE",		"dbg_");
 //------------------------------------------------------------------------------------------------------------------------ //
 ?>
