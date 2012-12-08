@@ -3,10 +3,15 @@ $search = (isset($_GET['search'])) ? (string)$_GET['search'] : NULL;
 $where = NULL;
 if($search)
 	$where = "`fullname` LIKE '%$search%'";
-	
+if(isset($_GET['del_id']))
+{
+	SQL_DB::sql_delete(MYSQL_PRE.'users', "id = ".$_GET['del_id']."", 1);
+}
 $limit	= (isset($_GET['limit'])) ? (string)$_GET['limit'] : 0;
 $or_name	= (isset($_GET['limit'])) ? (string)$_GET['limit'] : 0;
 $perPage  = 100;
+
+
 
 $t_results = SQL_DB::sql_select(MYSQL_PRE.'users', $where, "ORDER BY `datainsert` DESC");
 $max = count($t_results);
@@ -69,7 +74,7 @@ for($n=($limit+1); $n<=$limit+$perPage; $n++)
 						echo '<div class="td tcenter" style="width:50px; line-height:64px;">'.$posts.'</div>';
                     	echo '<div class="td tcenter" style="width:50px; line-height:64px;">'.$share.'</div>';
 						echo '<div class="td" style="width:50px; line-height:64px;">999,999</div>';
-						echo '<div class="td" style="width:110px;">'.$datainsert->format("H:i").' <strong>'.$datainsert->format("d M Y").'</strong><br /><span style="color:#666">'.Datatime::ago($datainsert->format("Y-m-d")).'</span><div class="options2"><a onclick="client_update('.$row["id"].', '.$row["gid"].'); return false;" href="#">Actualizeaza</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a onclick="client_sterge('.$row["id"].'); return false;" href="#">Sterge</a></div></div>';
+						echo '<div class="td" style="width:110px;">'.$datainsert->format("H:i").' <strong>'.$datainsert->format("d M Y").'</strong><br /><span style="color:#666">'.Datatime::ago($datainsert->format("Y-m-d")).'</span><div class="options2"><a onclick="client_update('.$row["id"].', '.$row["gid"].'); return false;" href="#">Actualizeaza</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="index.php?page=users&del_id='.$row['id'].'">Sterge</a></div></div>';
 					echo '</section>';
 				}
 				?>
