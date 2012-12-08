@@ -2,7 +2,10 @@ $(document).ready(function(){
 
 var key="AIzaSyCRfALTO27KAX-v5LrCm2bMzppRuimHBGA";
 
+
+alert("Loaded");
 var gplus=new function(){
+	alert("In clasa");	
 	this.init=function(){
 
 	}
@@ -50,11 +53,12 @@ var gplus=new function(){
 		});
 	}
 	this.client_crawl=function(){
+		alert("In functia crawl");
 		$.ajax({
 			url: 'php/ajax.php?page=cron',
 			  success: function(data){
 			    alert("Baza de date a fost actualizata cu succes!");
-				window.location="index.php?page=posts";
+			    window.location="index.php?page=posts";
 			  }
 		});
 	}
