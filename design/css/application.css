@@ -75,6 +75,10 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f9f9f9', end
 .wp-table > .tr > .td.options > a > span { display:block; height:10px; line-height:10px; }
 .wp-table > .tr:nth-child(2n) { background:#EEE; }
 .wp-table > .tr:last-child { border-bottom:none;-webkit-border-bottom-left-radius:inherit;-webkit-border-bottom-right-radius:inherit;-moz-border-radius-bottomleft:inherit;-moz-border-radius-bottomright:inherit;border-bottom-left-radius:inherit;border-bottom-right-radius:inherit; }
+.wp-table > .tr > .td .options {height:18px; line-height:18px; margin:0 0 0 50px;}
+.wp-table > .tr > .td .options a { float:left; margin-right:10px; color:#900;  }
+.wp-table > .tr > .td .options2 {height:18px; line-height:18px;}
+.wp-table > .tr > .td .options2 a { color:#900;  }
 
 .title { height:32px; width:400px; margin:10px 20px 0 20px; }
 .title h1 { font-size:18px; line-height:32px; text-indent:5px; }
