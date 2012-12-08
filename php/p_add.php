@@ -1,6 +1,18 @@
 <?php
-$gid = (isset($_POST['gid'])) ? (int)$_POST['gid'] : 0;
+$gid = (isset($_POST['gid'])) ? $_POST['gid'] : 0;
 $error = NULL;
+
+function fetch($url) {
+  $ch = curl_init();
+  $timeout = 20;
+  curl_setopt($ch, CURLOPT_URL, $url);
+  curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+  curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+  curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $timeout);
+  $data = curl_exec($ch);
+  curl_close($ch);
+  return $data;
+}
 
 
 if(isset($_POST['add']))
@@ -16,6 +28,20 @@ if(isset($_POST['add']))
 				
 				$user_id = SQL_DB::sql_insert(MYSQL_PRE."users", array('id'=>NULL,'gid'=>$gid,'datainsert'=>"NOW()"));
 				// actualizare date client
+				 $id=$user_id;
+ $gid=$gid;
+/*fetch*/
+$sur=fetch("https://www.googleapis.com/plus/v1/people/"+$gid+"?key=".$api_key);
+
+$jsursa=json_decode($sur);
+//'&f='+data.name.familyName+'&n='+data.name.givenName+'&av='+data.image.url
+
+$f=$jsursa->{'name'}->{'familyName'};
+$n=$jsursa->{'name'}->{'givenName'};
+$av=$jsursa->{'image'}->{'url'};
+ SQL_DB::sql_update(MYSQL_PRE."users",array('avatar'=>$av,'firstname'=>$f,'lastname'=>$n),"id=".$id,1);
+ echo "ok";
+ 
 			}
 			else
 				$error = "ID-ul exista.";

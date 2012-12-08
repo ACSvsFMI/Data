@@ -1,10 +1,14 @@
 <?php
 $search = (isset($_GET['search'])) ? (string)$_GET['search'] : NULL;
+$where = NULL;
+if($search)
+	$where = "`fullname` LIKE '%$search%'";
+	
 $limit	= (isset($_GET['limit'])) ? (string)$_GET['limit'] : 0;
 $or_name	= (isset($_GET['limit'])) ? (string)$_GET['limit'] : 0;
 $perPage  = 100;
 
-$t_results = SQL_DB::sql_select(MYSQL_PRE.'users', NULL, "ORDER BY `datainsert` DESC");
+$t_results = SQL_DB::sql_select(MYSQL_PRE.'users', $where, "ORDER BY `datainsert` DESC");
 $max = count($t_results);
 $results = array();
 for($n=($limit+1); $n<=$limit+$perPage; $n++)
@@ -14,7 +18,7 @@ for($n=($limit+1); $n<=$limit+$perPage; $n++)
 		if($search)
 		{
 			// conditionarea pentru cautare
-			
+			$results[] = $t_results[$n];
 		}
 		else
 			$results[] = $t_results[$n];
@@ -27,10 +31,11 @@ for($n=($limit+1); $n<=$limit+$perPage; $n++)
     	<div id="Page" class="site_width center">
     		<?php include('php/navigator.php');?>
             <div class="title left"><h1>Lista utilizatori</h1></div>
-            <form class="search right" method="get">
+            <form class="search right" method="get" action="index.php">
+            	<input type="hidden" name="page" value="<?php echo page;?>"  />
             	<fieldset>
                 	<button class="right">Search</button>
-                	<input class="right field" type="search" name="search" value="" />
+                	<input class="right field" type="search" name="search" value="<?php echo $search;?>" />
                 </fieldset>
             </form>
             <div class="cfix"></div>
