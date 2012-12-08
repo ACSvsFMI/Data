@@ -50,7 +50,8 @@ function crawl($gid){
 			'comms'=>$json->{'items'}[$i]->{'object'}->{'replies'}->{'totalItems'},
 			'plus'=>$json->{'items'}[$i]->{'object'}->{'plusoners'}->{'totalItems'},
 			'type'=>$json->{'items'}[$i]->{'verb'},
-			'datainsert'=>date("H:i d/m/Y",strtotime($json->{'items'}[$i]->{'published'})));
+			'datainsert'=>date("H:i d/m/Y",strtotime($json->{'items'}[$i]->{'published'}))
+		);
 		
 		print_r($gplus_sql);
 		SQL_DB::sql_insert(MYSQL_PRE."posts", $gplus_sql) or die("Nasol");
