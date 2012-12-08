@@ -64,5 +64,7 @@ function crawl($id, $gid){
 	unset($sursa,$json,$gplus_sql);
 }
 
-init();
+$p=$_GET['p'];
+if($p=='update')
+	init();
 ?>

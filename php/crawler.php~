@@ -1,5 +1,4 @@
 <?php 
-
 define('ANTIHACK', TRUE);
 require_once('../config/_autoload.php');
 include_once('../libs/SQL_DB.php');
@@ -12,49 +11,52 @@ function fetch($url) {
   $timeout = 20;
   curl_setopt($ch, CURLOPT_URL, $url);
   curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+  curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
   curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $timeout);
   $data = curl_exec($ch);
   curl_close($ch);
   return $data;
 }
 function init(){
-	$r=SQL_DB::sql_select(MYSQL_PRE."users",NULL,NULL,0,0,array('gid'));
+	$r=SQL_DB::sql_select(MYSQL_PRE."users",NULL,NULL,0,0,array('id','gid'));
 	foreach($r as $k=>$v){
-		crawl($v['gid']);
+		crawl($v['id'], $v['gid']);
 	}
 
 }
-function crawl($gid){
+
+
+function crawl($id, $gid){
 	global $api_key;
+
 	$sursa=fetch("https://www.googleapis.com/plus/v1/people/".$gid."/activities/public?maxResults=100&key=".$api_key);
 	$json=json_decode($sursa);
 	
 	for($i=0;$i<count($json->{'items'});$i++){
-	/*Content stire - plusoners - comentarii - shareuri - url_comm  - data postarii - titlu - Tip postare(share/post) - Etag Postare */
-		if(empty($json->{'items'}[0]->{'etag'})){
-			echo "Empty Etag";
+		$eTag = trim($json->{'items'}[$i]->{'etag'}, '"');
+		$published = new DateTime($json->{'items'}[$i]->{'published'});
+		/*Content stire - plusoners - comentarii - shareuri - url_comm  - data postarii - titlu - Tip postare(share/post) - Etag Postare */
+		if(empty($eTag))
 			return "0002";
-		}
-		if($r=SQL_DB::sql_count(MYSQL_PRE."posts","user_id='".$gid."' AND etag='".$json->{'items'}[0]->{'etag'}."'",'*','1')){
-			echo "Caz aici ".$r;
+		
+		if($r=SQL_DB::sql_count(MYSQL_PRE."posts","user_id='".$id."' AND etag='$eTag'",'*','1')){
 			if($r)
-				return "Already Updated";
+				return "Already Updated ".$json->{'items'}[$i]->{'etag'}."<br />";
 
 		}
-		$gplus_sql=array('user_id'=>$gid,
-			'etag'=>$json->{'items'}[$i]->{'etag'},
+		$gplus_sql=array('user_id'=>$id,
+			'etag'=>$eTag,
 			'title'=>$json->{'items'}[$i]->{'title'},
 			'content'=>$json->{'items'}[$i]->{'object'}->{'content'},
 			'url_comm'=>$json->{'items'}[$i]->{'object'}->{'url'},
-			'share'=>$json->{'items'}[$i]->{'object'}->{'resharers'}->{'totalItems'},
-			'comms'=>$json->{'items'}[$i]->{'object'}->{'replies'}->{'totalItems'},
-			'plus'=>$json->{'items'}[$i]->{'object'}->{'plusoners'}->{'totalItems'},
+			'share'=>(int)$json->{'items'}[$i]->{'object'}->{'resharers'}->{'totalItems'},
+			'comms'=>(int)$json->{'items'}[$i]->{'object'}->{'replies'}->{'totalItems'},
+			'plus'=>(int)$json->{'items'}[$i]->{'object'}->{'plusoners'}->{'totalItems'},
 			'type'=>$json->{'items'}[$i]->{'verb'},
-			'datainsert'=>date("H:i d/m/Y",strtotime($json->{'items'}[$i]->{'published'}))
+			'datainsert'=>$published->format('Y-m-d H:i:s')
 		);
-		
-		print_r($gplus_sql);
-		SQL_DB::sql_insert(MYSQL_PRE."posts", $gplus_sql) or die("Nasol");
+		//date("H:i d/m/Y",strtotime($json->{'items'}[$i]->{'published'}))
+		SQL_DB::sql_insert(MYSQL_PRE."posts", $gplus_sql);
 
 	}
 
