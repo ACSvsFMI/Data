@@ -55,7 +55,6 @@ function crawl($gid){
 		
 		print_r($gplus_sql);
 		SQL_DB::sql_insert(MYSQL_PRE."posts", $gplus_sql) or die("Nasol");
-		));
 
 	}
 

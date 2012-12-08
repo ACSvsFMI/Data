@@ -17,26 +17,30 @@ var gplus=new function(){
 	this.init=function(){
 
 	}
-	this.fetch_userdata=function(gid){
+	this.client_update=function(id,gid){
 		$.getJSON("https://www.googleapis.com/plus/v1/people/"+gid+"?callback=?&key="+key,function(data){
 			console.log(data);
 			//Vf daca e user data.isPlusUser
 			if(data.isPlusUser){
 				alert("Eroare, utilizatorul nu exista");			
 			}
-			alert(data.id + " "+data.gender+" "+data.name.familyName+" "+data.name.givenName+" "+data.image.url);
+			/*Actualizare tabel ws*/
+			$("Cimage_"+id).html(data.image.url);
+			$("Cfname_"+id).html(data.name.familyName+" "+data.name.givenName);
 			
-		});
-	}
-	this.activity=function(gid){
-		$.getJSON("https://www.googleapis.com/plus/v1/people/"+gid+"/activities/public?callback=?&maxResults=100&key="+key,function(data){
-			console.log(data);
+			$.ajax({
+			  url: 'php/ajax.php?page=update',
+			  success: function(data){
+			    $('.result').html(data);
+			    //data.id + " "+data.gender+" "+data.name.familyName+" "+data.name.givenName+" "+data.image.url
+			    
+			  }
+			});
 		});
 	}
 }
 
-
-gplus.activity("107478352790883449995");
+//gplus.client_update("107478352790883449995");
 
 	
 
